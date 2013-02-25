@@ -3,7 +3,7 @@ KMJCronBundle
 
 
 Welcome to the KMJCronBundle. The goal of this bundle is to provide an easy way to manage crons. 
-It accomplishes this goal by searching for all Symfony 2 commands and searching for the @CronJob annotation.
+It accomplishes this goal by searching for all Symfony 2 commands using the @CronJob annotation.
 When found, the annotation is broken down and installed to the current user's crontab. Currently this bundle only supports linux servers. There is
 a know issue where if the server is running cPanel, the crontab cannot be updated. Instead list it manually and copy them to the crontab.
 
