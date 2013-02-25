@@ -1,4 +1,4 @@
 KMJCronBundle
 ===================
 
-Documentation: [a relative link](Resources/docs/installation.md)
+Documentation: [Installation](Resources/doc/installation.md)
