@@ -1,0 +1,25 @@
+{
+    "name": "kmj/cronbundle",
+    "type": "symfony-bundle",
+    "description": "Symfony2 Bundle that handles updating and installing crons into a local computers crontab",
+    "keywords": ["KMJ", "sync", "synchronization"],
+    "homepage": "http://github.com/Demoboy/CronBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kaelin Jacobson",
+            "email": "kaelinjacobson@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "require-dev": {
+        "symfony/framework-bundle": ">=2.0"
+    },
+    "autoload": {
+        "psr-0": { "KMJ\\CronBundle": "" }
+    },
+    "minimum-stability": "dev",
+    "target-dir": "KMJ/CronBundle"
+}
