@@ -29,11 +29,14 @@ class CronInstallCommand extends ContainerAwareCommand {
         $cronManager = new CronManager(); //crons are now loaded into memory and accessable through $->get();
 
         $reader = $this->getContainer()->get("annotation_reader");
-
+        
+        $currentEnv = $this->getContainer()->get("kernel")->getEnvironment();
+       
         $output->writeln("<info>Installing commands to crontab</info>");
 
-        if ($input->getOption('dump'))
+        if ($input->getOption('dump')) {
             $output->writeln("<info>Dumping crons to screen</info>");
+        }
 
         foreach ($this->getApplication()->all() as $command) {
             $reflectionClass = new \ReflectionClass($command);
@@ -49,6 +52,10 @@ class CronInstallCommand extends ContainerAwareCommand {
                     } else {
                         $path = "php";
                     }
+                    
+                    if ($annotations->env != null && $currentEnv != $annotations->env) {
+                        continue;
+                    }
 
                     $cron->setCommand("{$path} " . $this->getContainer()->get('kernel')->getRootDir() . '/console --env=' . $this->getContainer()->get('kernel')->getEnvironment() .' '. $command->getName())
                             ->setDayOfMonth($annotations->day)
@@ -59,26 +66,24 @@ class CronInstallCommand extends ContainerAwareCommand {
                             ->setComment($command->getDescription() . ' ' . self::CRON_BUNDLE_FINGERPRINT);
 
                     foreach ($cronManager->get() as $existingCron) {
-                        if ($cron->equals($existingCron)) {
+                        if ($cron->equals($existingCron) ) {
                             $doNotAdd = true;
                             break;
                         }
+                    }                    
+
+                    if ($input->getOption('dump')) {
+                        $output->writeln($cron);
                     }
 
-                    if ($input->getOption('dump'))
-                        $output->writeln($cron);
-
-                    if (!$doNotAdd && !$input->getOption('dump'))
+                    if (!$doNotAdd && !$input->getOption('dump')) {
                         $cronManager->add($cron);
+                    }
                 }
             }
         }
-
-
 
         $output->writeln("<info>Done!</info>");
     }
 
 }
-
-?>

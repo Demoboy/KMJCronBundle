@@ -73,6 +73,6 @@ Any time frame not provided is a wildcard. Slashes are also available however yo
 
 So a command with the following annotation
 <pre>
-@CronJob(hour="1,4", minute="/5")
+@CronJob(hour="1,4", minute="/5", env="prod")
 </pre>
-Would run every five minutes at 1AM and 4AM.
+Would run every five minutes at 1AM and 4AM only in the production environment.

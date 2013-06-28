@@ -13,6 +13,5 @@ final class CronJob implements Annotation {
     public $hour = "*";
     public $minute = "*";
     public $dayOfWeek = "*";
+    public $env = null;
 }
-
-?>
