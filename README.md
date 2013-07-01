@@ -62,8 +62,7 @@ the production environment, it will use the KMJSyncBundle and sync uploaded file
 
 kmj_update:
   sync: true                #set to false if you do not want the database to sync or you do not have the KMJSyncBundle installed
-  composer:
-    shouldupdate: true      #set to false to have composer use the lock file to install dependencies
+  composershouldupdate: true      #set to false to have composer use the lock file to install dependencies
   git:
     remote: origin          #The remote name in the git config
     branch: develop         #The banch to pull from on the remote server
