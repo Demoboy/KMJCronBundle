@@ -1,0 +1,26 @@
+{
+    "name": "kmj/updatebundle",
+    "type": "symfony-bundle",
+    "description": "Symfony2 Bundle that manages keeping code and database up to date with eachother on a constant basis",
+    "keywords": ["KMJ", "updating"],
+    "homepage": "http://github.com/Demoboy/UpdateBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kaelin Jacobson",
+            "email": "kaelinjacobson@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "paypal/rest-api-sdk-php": "dev-master"
+    },
+    "require-dev": {
+        "symfony/framework-bundle": ">=2.0"
+    },
+    "autoload": {
+        "psr-0": { "KMJ\\UpdateBundle": "" }
+    },
+    "minimum-stability": "dev",
+    "target-dir": "KMJ/UpdateBundle"
+}
