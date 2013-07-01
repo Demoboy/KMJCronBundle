@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Process\Process;
 
 /**
  * Description of UpdateLocationsCron
@@ -20,19 +21,17 @@ class UpdateCommand extends ContainerAwareCommand {
     }
 
     public function execute(InputInterface $input, OutputInterface $output) {
-        //get the current of the app
         $kernel = $this->getContainer()->get("kernel");
         $appPath = $kernel->getRootDir() . "/../";
         $updateService = $this->getContainer()->get("updater");
-        
-        $output->writeln("cd {$appPath} && git pull {$updateService->getGitRemote()} {$updateService->getGitBranch()}");
-        die();
 
-        $pullProcess = new \Symfony\Component\Process\Process("cd {$appPath} && git pull {$updateService->getGitRemote()} {$updateService->getGitBranch()}");
+        $output->writeln("Executing git pull");
 
+        $pullProcess = new Process("cd {$appPath} && git pull {$updateService->getGitRemote()} {$updateService->getGitBranch()}");
+        $pullProcess->setTimeout(3600);
         $pullProcess->run(function ($type, $buffer) use (&$output) {
                     if (Process::ERR !== $type) {
-                        $output->writeln($buffer);
+                        $output->write("<info>".$buffer);
                     }
                 });
 
@@ -40,27 +39,30 @@ class UpdateCommand extends ContainerAwareCommand {
 
         if ($updateService->composerShouldUpdate()) {
             $composerCommand .= "update";
+            $output->writeln("Executing composer update");
         } else {
             $composerCommand .= "install";
+            $output->writeln("Running composer install");
         }
 
-        $composerProcess = new \Symfony\Component\Process\Process($composerCommand);
+        $composerProcess = new Process($composerCommand);
+        $composerProcess->setTimeout(3600);
 
         $composerProcess->run(function ($type, $buffer) use (&$output) {
                     if (Process::ERR !== $type) {
-                        $output->writeln($buffer);
+                        $output->write("<info>".$buffer);
                     }
                 });
-                
-        return;
 
         if ($kernel->getEnvironment() != "prod") {
             if ($updateService->shouldSync()) {
-                $syncProcess = new Process("cd {$appPath} && app/console kmj:sync:sync");
+                $output->writeln("Syncing database and uploaded files");
 
+                $syncProcess = new Process("cd {$appPath} && app/console kmj:sync:sync --env='{$kernel->getEnvironment()}'");
+                $syncProcess->setTimeout(3600);
                 $syncProcess->run(function ($type, $buffer) use (&$output) {
                             if (Process::ERR !== $type) {
-                                $output->writeln($buffer);
+                                $output->write("<info>".$buffer);
                             }
                         });
             }
