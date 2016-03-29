@@ -14,12 +14,7 @@
     "require": {
         "php": ">=5.3.3"
     },
-    "require-dev": {
-        "symfony/framework-bundle": ">=2.0"
-    },
     "autoload": {
-        "psr-0": { "KMJ\\CronBundle": "" }
-    },
-    "minimum-stability": "dev",
-    "target-dir": "KMJ/CronBundle"
+        "psr-4": { "KMJ\\CronBundle\\": "" }
+    }
 }
